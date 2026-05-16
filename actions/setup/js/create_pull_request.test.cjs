@@ -1453,6 +1453,26 @@ ${diffs}
     expect(result.success).toBe(false);
     expect(result.error).toContain("protected files");
   });
+
+  it("should include a Closes body prefill in protected-files fallback compare URL", async () => {
+    const patchPath = writePatch(createPatchWithFiles(".github/aw/instructions.md"));
+    process.env.GH_AW_PROMPTS_DIR = path.join(__dirname, "../md");
+    global.github.rest.issues = {
+      create: vi.fn().mockResolvedValue({ data: { number: 55, html_url: "https://github.com/test/issues/55" } }),
+    };
+
+    const { main } = require("./create_pull_request.cjs");
+    const handler = await main({
+      protected_path_prefixes: [".github/"],
+      protected_files_policy: "fallback-to-issue",
+    });
+    const result = await handler({ patch_path: patchPath, title: "Test PR", body: "", branch: "feature/protected-fallback" }, {});
+
+    expect(result.success).toBe(true);
+    expect(result.fallback_used).toBe(true);
+    const issueCall = global.github.rest.issues.create.mock.calls[0][0];
+    expect(issueCall.body).toContain("body=Closes%20%23");
+  });
 });
 
 // excluded-files exclusion list

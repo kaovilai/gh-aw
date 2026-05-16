@@ -35,16 +35,6 @@
             "pull-requests": "write",
             "workflows": "write"
           }
-        },
-        "kaovilai/gh-aw": {
-          "permissions": {
-            "actions": "write",
-            "contents": "write",
-            "discussions": "read",
-            "issues": "read",
-            "pull-requests": "write",
-            "workflows": "write"
-          }
         }
       }
     }

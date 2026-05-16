@@ -1993,7 +1993,7 @@ ${patchPreview}`;
         // Normal case — push succeeded, provide compare URL.
         const encodedBase = encodePathSegments(baseBranch);
         const encodedHead = encodePathSegments(branchName);
-        const createPrUrl = `${githubServer}/${repoParts.owner}/${repoParts.repo}/compare/${encodedBase}...${encodedHead}?expand=1&title=${encodeURIComponent(title)}`;
+        const createPrUrl = `${githubServer}/${repoParts.owner}/${repoParts.repo}/compare/${encodedBase}...${encodedHead}` + `?expand=1&title=${encodeURIComponent(title)}&body=${encodeURIComponent("Closes #")}`;
         const templatePath = getPromptPath("manifest_protection_create_pr_fallback.md");
         fallbackBody = renderTemplateFromFile(templatePath, {
           main_body: mainBodyContent,
